@@ -1,0 +1,21 @@
+method findMaxConsecutiveDifference(
+    array: Seq[Int]
+)
+    returns (pos: Int)
+    requires |array| >= 2
+    // TODO: method postconditions
+{
+    pos := 0
+    var diff: Int := array[1] - array[0]
+    var i: Int := 0
+    while (i + 1 < |array|)
+    // TODO: loop invariants
+    {
+        var new_diff: Int := array[i + 1] - array[i]
+        if (new_diff > diff) {
+            diff := new_diff
+            pos := i
+        }
+        i := i + 1
+    }
+}
