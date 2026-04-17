@@ -1,0 +1,38 @@
+// Declaring the domain introduces a new uninterpreted sort "Pair"
+domain Pair {
+  // Functions in domains become uninterpreted functions 
+  // on the SMT level
+  function pair(i1: Int, i2: Int): Pair
+  function fst(p: Pair): Int
+  function snd(p: Pair): Int
+
+  // Axioms are added to the Background Predicate
+  axiom fst_def {
+    forall i1: Int, i2: Int :: { (pair(i1, i2)) }
+      fst(pair(i1, i2)) == i1
+  }
+
+  axiom snd_def {
+    forall i1: Int, i2: Int :: { (pair(i1, i2)) }  
+      snd(pair(i1, i2)) == i2
+  }
+
+  axiom {
+    // Multipattern: Trigger only when seeing fst(p) AND snd(p)
+    // for the same p.
+    forall p: Pair :: { fst(p), snd(p)} 
+      p == pair(fst(p), snd(p))
+  }
+
+  // Alternative: forall x: Int :: { e1, e2} { e3 } ...
+  // triggers when seing either e1 AND e2 (multipattern) or just e3
+  // (i.e., we have multiple patterns).
+}
+
+method main()
+{
+    assert fst(pair(1, 2)) == 1
+    // The following line verifies with the current triggers for fst_def and snd_def,
+    // but not if we change the triggers to { fst(pair(i1, i2)) } and { snd(pair(i1, i2)) }
+    assert pair(1,4) != pair(2,5)  
+}

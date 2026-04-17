@@ -1,0 +1,47 @@
+domain MyDomain {  
+    function foo(Int): Int
+    function bar(Int): Int
+}
+
+method m1() {
+    assume forall i: Int :: { foo(i) } foo(i) == i && bar(i) == i + 1
+    assert foo(1) == 1 // triggers foo(i) with i = 1 and verifies
+}
+
+method m2() {
+    assume forall i: Int :: { foo(i) } foo(i) == i && bar(i) == i + 1
+    assert bar(1) == 2 // does not trigger, cannot be verified
+}
+
+method m3() {
+    // triggers on foo(i) OR bar(i)
+    assume forall i: Int :: { foo(i) } { bar(i) } foo(i) == i && bar(i) == i + 1
+    assert bar(1) == 2 // triggers bar(i) with i = 1 and verifies
+    assert foo(3) == 3 // triggers foo(i) with i = 3 and verifies
+}
+
+method m4() {
+    // triggers on foo(i) AND bar(i) for the same i (multitrigger)
+    assume forall i: Int :: { foo(i), bar(i) } foo(i) == i && bar(i) == i + 1
+    assert bar(1) == 2 // does not trigger because foo(1) is missing, cannot be verified
+}
+
+method m5() {
+    // triggers on foo(i) AND bar(i) for the same i
+    assume forall i: Int :: { foo(i), bar(i) } foo(i) == i && bar(i) == i + 1
+    assert foo(1) == 1 // does not trigger because bar(1) is missing, cannot be verified
+}
+
+method m6() {
+    // triggers on foo(i) AND bar(i) for the same i
+    assume forall i: Int :: { foo(i), bar(i) } foo(i) == i && bar(i) == i + 1
+    assert bar(1) + foo(1) == 3 // triggers foo(i) and bar(i) with i = 1, verifies
+}
+
+method m7() {
+    // triggers on foo(i) AND bar(i) for the same i
+    assume forall i: Int :: { foo(i), bar(i) } foo(i) == i && bar(i) == i + 1
+    assert bar(1) + foo(2) == 4 // triggers foo(i) with i = 2 and bar(i) with i = 1, 
+                                // missing either bar(i) with i=2 or foo(i) with i = 1,
+                                // therefore cannot be verified.
+}

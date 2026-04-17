@@ -1,0 +1,29 @@
+method main() {
+    var n: Int; var m: Int; var res: Int 
+
+    assume n >= 0 && m >= 0
+
+    var x: Int := n
+    var y: Int := m 
+    res := 0
+
+    // n = 5, m = 3
+    // it0: x = 5, y = 3, res = 0
+    // it1: x = 2, y = 6, res = 3
+    // it2: x = 1, y = 12, res = 3
+    // it3: x = 0, y = 24, res = 15
+
+    while (x > 0)
+        invariant x * y + res == n * m
+        invariant x >= 0
+    {
+        if (x % 2 == 1) {
+            res := res + y
+        }
+        x := x / 2
+        y := y * 2
+    }
+    
+    assert res == n * m 
+}
+

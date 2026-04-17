@@ -1,0 +1,25 @@
+
+method test()
+{
+    var r: Int
+    
+    r := sum(10)
+
+    assert r == 55
+}
+
+method sum(n: Int) returns (res: Int)
+    requires n >= 0
+    ensures res == n * (n + 1) / 2
+{
+    if (n == 0) {
+        res := 0
+    } else {
+        // cannot write res := sum(n - 1) + n directly because 
+        // procedure calls are not expressions, so the sum call
+        // has to be a separate statement.
+        var tmp: Int
+        tmp := sum(n - 1)
+        res := tmp + n
+    }
+}

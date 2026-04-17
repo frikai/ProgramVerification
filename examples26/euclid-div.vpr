@@ -1,0 +1,25 @@
+method main() {
+
+    var M: Int
+    var N: Int
+    var res: Int 
+
+    // divide M by N, get res
+
+    assume N > 0 && M >= 0 
+
+    var m: Int := M  // remainder
+    res := 0  
+    while (m >= N) 
+        invariant M == res * N + m
+    {
+        m := m - N
+        res := res + 1
+    }
+
+    assert m <= N
+    assert M == res * N + m
+}
+
+
+

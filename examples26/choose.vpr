@@ -1,0 +1,33 @@
+method main() {
+  var x: Int
+  var y: Int
+
+  x := choose1()
+  y := choose1()
+
+  // Cannot prove the following assertions because x and y are unknown
+  assert x == y
+  assert x != y
+}
+
+method choose1() returns (res: Int)
+
+method main2() {
+  var x: Int
+  var y: Int
+
+  x := choose2(1, 10)
+  y := choose2(1, 10)
+
+  // Same as above
+  assert x == y
+  assert x != y
+
+  // choose2 must have precondition, otherwise we can prove false after
+  // x := choose2(100, 10)
+  // because we've assumed 100 <= x < 10, which is impossible.
+}
+
+method choose2(lower: Int, upper: Int) returns (res: Int)
+  requires lower <= upper
+  ensures lower <= res <= upper
