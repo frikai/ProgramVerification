@@ -1,0 +1,40 @@
+method find_duplicate(values: Seq[Int])
+    returns (found: Bool, first: Int, second: Int)
+    // TASK 3A: if the method returns !found, there is no duplicate
+    // ensures ...
+    // TASK 3B: if the method returns found, there is a duplicate at the returned indices
+    // ensures ...
+    // TASK 3C: if the method returns found, there is no duplicate earlier
+    // ensures ...
+{
+    found := false
+    if (|values| > 1) {
+        var i: Int := 0
+        var j: Int := 0
+        while (!found && i < |values|)
+            invariant 0 <= i <= |values|
+            // invariant(s) for outer loop
+            //  invariant ...
+        {
+            j := 0
+            while (!found && j < |values|)
+                invariant 0 <= j <= |values|
+                // invariant(s) for inner loop
+                //  invariant ...
+            {
+                if (i != j && values[i] == values[j]) {
+                    found := true
+                } else {
+                    j := j + 1
+                }
+            }
+            if (!found) {
+                i := i + 1
+            }
+        }
+        if (found) {
+            first := i
+            second := j
+        }
+    }
+}

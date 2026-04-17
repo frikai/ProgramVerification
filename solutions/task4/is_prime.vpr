@@ -1,0 +1,28 @@
+function math_is_prime(num: Int): Bool
+    requires num >= 1
+{
+    forall d: Int :: d >= 2 && d < num ==> num % d != 0
+}
+
+method is_prime() {
+    var n: Int // input
+
+    assume n >= 2 // precondition
+
+    var res: Bool
+    var u: Int
+
+    res := true
+    u := 2
+    while (res && u < n)
+        invariant u >= 2 && u <= n
+        invariant res == (forall d: Int :: d >= 2 && d < u ==> n % d != 0)
+    {
+        if (n % u == 0) {
+            res := false
+        }
+        u := u + 1
+    }
+
+    assert res == math_is_prime(n) // postcondition
+}

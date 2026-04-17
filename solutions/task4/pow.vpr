@@ -1,0 +1,27 @@
+function math_pow(n: Int, e: Int): Int
+    requires e >= 0
+{
+    e == 0 ? 1 : n * math_pow(n, e - 1)
+}
+
+method pow() {
+    var n: Int // input: base
+    var e: Int // input: exponent
+
+    assume e >= 0 // precondition
+
+    var k: Int
+    var res: Int
+
+    k := 0
+    res := 1
+    while (k < e)
+        invariant 0 <= k && k <= e
+        invariant res == math_pow(n, k)
+    {
+        res := res * n
+        k := k + 1
+    }
+
+    assert res == math_pow(n, e) // postcondition
+}
