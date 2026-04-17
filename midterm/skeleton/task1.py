@@ -35,18 +35,28 @@ x, y, z = Ints("x y z")
 
 # TODO:
 # create = ...
+create = Function("create", IntSort(), MapSort)
+
+ax0 = ForAll([x,y], get(create(x), y) == x, patterns=[get(create(x), y)])
+s.add(ax0)
 
 # tests (uncomment to check your solution)
-#check(get(create(42), 7) == 42)
+# check(get(create(42), 7) == 42)
 
 # Task 1B: Modification
 
 # TODO:
 # set = ...
+i = Ints("i")
+set = Function("set", MapSort, IntSort(), IntSort(), MapSort)
+ax1 = ForAll([x, y, z], get(set(create(x), y, z), y) == z, patterns=[get(set(create(x), y, z))]) 
+ax2 = ForAll([x, y, z], Not(y==i) ==> get(set(create(x), y, z), i) == x) 
+s.add(ax1)
+s.add(ax2)
 
 # tests (uncomment to check your solution)
-#check(get(set(create(42), 7, 72), 7) == 72)
-#check(get(set(create(42), 7, 72), 1) == 42)
+# check(get(set(create(42), 7, 72), 7) == 72)
+# check(get(set(create(42), 7, 72), 1) == 42)
 
 # Task 1C: Even-odd merge
 
