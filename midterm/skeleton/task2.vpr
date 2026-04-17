@@ -4,12 +4,21 @@ method findMaxConsecutiveDifference(
     returns (pos: Int)
     requires |array| >= 2
     // TODO: method postconditions
+    ensures pos+1 < |array|
+    ensures pos >= 0
+    ensures forall j: Int ::{array[j]}(0 <= j && j+1 < |array| )==> ((array[j+1]-array[j])<= (array[pos+1]-array[pos]))
 {
     pos := 0
     var diff: Int := array[1] - array[0]
     var i: Int := 0
     while (i + 1 < |array|)
     // TODO: loop invariants
+    invariant i >= 0
+    invariant i < |array|
+    invariant pos ==0 || pos < i
+    invariant pos >= 0
+    invariant forall j: Int ::{array[j]}(0 <= j && j<i )==> ((array[j+1]-array[j])<= (array[pos+1]-array[pos]))
+
     {
         var new_diff: Int := array[i + 1] - array[i]
         if (new_diff > diff) {
